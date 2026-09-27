@@ -1,0 +1,58 @@
+{
+  "name": "chatgiza",
+  "displayName": "ChatGiZa",
+  "description": "ChatGiZa coding agent, built into GiZa Code -- chat with GiZa to build, edit, and debug real code in your workspace.",
+  "version": "1.0.0",
+  "publisher": "wellxaitech",
+  "license": "MIT",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onChatParticipant:chatgiza.agent"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "chatgiza.agent",
+        "name": "chatgiza",
+        "fullName": "ChatGiZa",
+        "description": "Build, edit, and debug code in your workspace",
+        "isSticky": true
+      }
+    ],
+    "commands": [
+      {
+        "command": "chatgiza.signIn",
+        "title": "ChatGiZa: Sign In"
+      },
+      {
+        "command": "chatgiza.signOut",
+        "title": "ChatGiZa: Sign Out"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "gulp compile-extension:chatgiza",
+    "watch": "gulp watch-extension:chatgiza"
+  },
+  "dependencies": {
+    "mammoth": "^1.12.1",
+    "pdf-parse": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pdf-parse": "^1.1.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WellXaiTech/vscode"
+  }
+}
