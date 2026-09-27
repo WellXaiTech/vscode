@@ -552,6 +552,14 @@ function prepareCopilotRipgrepShimTask(platform: string, arch: string, destinati
 		const appNodeModulesDir = path.join(appBase, 'node_modules.asar.unpacked');
 
 		const builtInCopilotExtensionDir = path.join(appBase, 'extensions', 'copilot');
+		// GiZa Code ships ChatGiZa rather than the Copilot VSIX that
+		// Microsoft's product pipeline injects, so the packaged app has no
+		// @github/copilot SDK to shim -- skip instead of failing the build.
+		const copilotSdkDir = path.join(builtInCopilotExtensionDir, 'node_modules', '@github', 'copilot', 'sdk');
+		if (!fs.existsSync(copilotSdkDir)) {
+			console.log(`Skipping Copilot ripgrep shim: no bundled Copilot SDK at ${copilotSdkDir}`);
+			return;
+		}
 		prepareBuiltInCopilotRipgrepShim(platform, arch, builtInCopilotExtensionDir, appNodeModulesDir);
 	};
 }
