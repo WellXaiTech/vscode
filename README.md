@@ -1,3 +1,15 @@
+# GiZa Code
+
+**GiZa Code** is WellX AI's code editor, built as a fork of [Code - OSS](https://github.com/microsoft/vscode) (the open-source project behind Visual Studio Code, MIT-licensed). It carries WellX AI branding and, going forward, integrates [ChatGiZa](https://chatgiza.com) AI assistance directly into the editor.
+
+- Upstream: `microsoft/vscode`
+- Branding and product identity: see `product.json`
+- Extensions install from [Open VSX](https://open-vsx.org) (forks may not use the Microsoft Marketplace)
+
+The original Code - OSS README follows below.
+
+---
+
 # Visual Studio Code - Open Source ("Code - OSS")
 [![Feature Requests](https://img.shields.io/github/issues/microsoft/vscode/feature-request.svg)](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
 [![Bugs](https://img.shields.io/github/issues/microsoft/vscode/bug.svg)](https://github.com/microsoft/vscode/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
