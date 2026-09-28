@@ -1,14 +1,8 @@
 name: Component Fixtures
 
+# Upstream CI: not runnable/needed on this fork's PRs. Manual trigger only.
 on:
-  push:
-    branches:
-      - main
-      - 'release/*'
-  pull_request:
-    branches:
-      - main
-      - 'release/*'
+  workflow_dispatch:
 
 permissions:
   contents: read
