@@ -57,7 +57,21 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit 1 }
 
       - name: Build GiZa Code (win32-x64)
-        run: npm run gulp vscode-win32-x64-min
+        shell: pwsh
+        # patchWin32DependenciesTask shells out to signtool.exe (to strip
+        # stale Authenticode signatures before rcedit), which lives in the
+        # Windows SDK and is not on PATH by default -- same PATH prepend
+        # the upstream pipeline does, but resolving the SDK version present
+        # on the runner instead of hardcoding one.
+        run: |
+          $sdkBin = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Directory |
+            Where-Object { Test-Path (Join-Path $_.FullName "x64\signtool.exe") } |
+            Sort-Object Name -Descending | Select-Object -First 1
+          if (-not $sdkBin) { Write-Error "No Windows SDK with signtool.exe found"; exit 1 }
+          Write-Host "Using signtool from: $($sdkBin.FullName)\x64"
+          $env:PATH = "$($sdkBin.FullName)\x64;$env:PATH"
+          npm run gulp vscode-win32-x64-min
+          if ($LASTEXITCODE -ne 0) { exit 1 }
 
       - name: Build user-setup installer
         run: |
@@ -107,15 +121,13 @@ jobs:
       - name: Build GiZa Code (linux-x64)
         run: npm run gulp vscode-linux-x64-min
 
-      - name: Build .deb package
-        run: |
-          npm run gulp vscode-linux-x64-prepare-deb
-          npm run gulp vscode-linux-x64-build-deb
-
+      # No .deb for now: prepare-deb runs dpkg-shlibdeps over
+      # bin/giza-code-tunnel, a Rust CLI that only the upstream product
+      # pipeline builds and injects, so it hard-fails here. The tar.gz
+      # carries the complete app; revisit once the CLI is built too.
       - name: Collect artifacts
         run: |
           mkdir -p artifacts
-          cp .build/linux/deb/amd64/deb/*.deb artifacts/GiZaCode-linux-amd64.deb
           tar -czf artifacts/GiZaCode-linux-x64.tar.gz -C .. VSCode-linux-x64
 
       - name: Upload artifacts
@@ -181,5 +193,5 @@ jobs:
 
           - Windows: SmartScreen will warn on first run -- click \"More info\" then \"Run anyway\".
           - Mac: Gatekeeper will block it on first run -- right-click the app and choose \"Open\" once, or run \`xattr -cr /Applications/GiZa\\ Code.app\` in Terminal.
-          - Linux: install the .deb with \`sudo apt install ./GiZaCode-linux-amd64.deb\`, or unpack the tar.gz anywhere." \
+          - Linux: unpack the tar.gz anywhere and run \`./VSCode-linux-x64/bin/giza-code\`." \
             artifacts/*
