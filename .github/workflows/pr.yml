@@ -1,10 +1,10 @@
 name: Code OSS
 
+# Upstream CI: runs on Microsoft's self-hosted 1ES pools and paid
+# macos-26-xlarge runners, none of which exist on this fork -- every PR
+# run here just fails or hangs. Manual trigger only.
 on:
-  pull_request:
-    branches:
-      - main
-      - 'release/*'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

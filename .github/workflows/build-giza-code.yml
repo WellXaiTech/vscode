@@ -33,6 +33,19 @@ jobs:
         with:
           node-version-file: .nvmrc
 
+      - name: Locate Visual Studio
+        shell: pwsh
+        # build/npm/preinstall.ts only probes the default 2022/2019 install
+        # paths, which newer runner images no longer use -- point its
+        # vs2022_install override at whatever VS instance the runner has.
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsPath = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $vsPath) { $vsPath = & $vswhere -latest -products * -property installationPath }
+          if (-not $vsPath) { Write-Error "No Visual Studio installation found"; exit 1 }
+          Write-Host "Using Visual Studio at: $vsPath"
+          "vs2022_install=$vsPath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
       - name: Install dependencies
         shell: pwsh
         run: |
