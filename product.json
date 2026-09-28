@@ -93,8 +93,8 @@
 		}
 	],
 	"defaultChatAgent": {
-		"extensionId": "GitHub.copilot",
-		"chatExtensionId": "GitHub.copilot-chat",
+		"extensionId": "wellxaitech.chatgiza",
+		"chatExtensionId": "wellxaitech.chatgiza",
 		"chatExtensionOutputId": "GitHub.copilot-chat.GitHub Copilot Chat.log",
 		"chatExtensionOutputExtensionStateCommand": "github.copilot.debug.extensionState",
 		"documentationUrl": "https://aka.ms/github-copilot-overview",
