@@ -25,7 +25,14 @@
         "name": "chatgiza",
         "fullName": "ChatGiZa",
         "description": "Build, edit, and debug code in your workspace",
-        "isSticky": true
+        "isSticky": true,
+        "isDefault": true,
+        "locations": [
+          "panel"
+        ],
+        "modes": [
+          "ask"
+        ]
       }
     ],
     "commands": [
@@ -54,5 +61,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/WellXaiTech/vscode"
-  }
+  },
+  "enabledApiProposals": [
+    "defaultChatParticipant"
+  ]
 }
